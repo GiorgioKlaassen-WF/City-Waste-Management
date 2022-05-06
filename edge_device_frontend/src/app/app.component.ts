@@ -6,6 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  collapsed!: true;
+  public collapsed: boolean = true;
   title = 'edge_device_frontend';
+
+  ngOnInit(){
+    this.collapsed = true;
+  }
 }
+

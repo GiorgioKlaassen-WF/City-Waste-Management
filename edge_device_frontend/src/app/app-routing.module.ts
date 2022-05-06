@@ -4,6 +4,7 @@ import { HomeComponent } from "./home/home.component";
 import { EventsComponent } from "./events/events.component";
 import { MapComponent } from "./map/map.component";
 import { DataComponent } from "./data/data.component";
+import { SensorsComponent } from "./sensors/sensors.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'events', component: EventsComponent},
   { path: 'map', component: MapComponent},
   { path: 'data', component: DataComponent},
+  { path: 'sensor', component: SensorsComponent}
 ];
 
 @NgModule({

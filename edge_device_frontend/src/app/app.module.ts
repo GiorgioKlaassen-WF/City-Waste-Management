@@ -9,6 +9,9 @@ import { HomeComponent } from './home/home.component';
 import { MapComponent } from './map/map.component';
 import { DataComponent } from './data/data.component';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { SensorsComponent } from './sensors/sensors.component';
+
 
 @NgModule({
   declarations: [
@@ -17,6 +20,7 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
     HomeComponent,
     MapComponent,
     DataComponent,
+    SensorsComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,6 +28,7 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
     AppRoutingModule,
     NgxChartsModule,
     BrowserAnimationsModule,
+    LeafletModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
