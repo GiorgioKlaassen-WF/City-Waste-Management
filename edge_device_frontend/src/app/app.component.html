@@ -1,0 +1,39 @@
+<div class="main-container">
+  <header class="header-6">
+    <div class="branding">
+      <a class="nav-link" routerLink="">
+        <clr-icon class="is-solid" shape="recycle"></clr-icon>
+        <span class="title">City Waste Management</span>
+      </a>
+    </div>
+    <div class="header-actions">
+      <clr-dropdown>
+        <button aria-label="toggle settings menu" class="nav-icon" clrDropdownTrigger>
+          <clr-icon shape="cog"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <a clrDropdownItem href="...">Preferences</a>
+          <a clrDropdownItem href="...">Log out</a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+  </header>
+  <div class="content-container">
+    <clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapsed">
+      <a clrVerticalNavLink routerLink="events" routerLinkActive="active">
+        <clr-icon clrVerticalNavIcon shape="event"></clr-icon>
+        Events</a>
+      <a clrVerticalNavLink routerLink="map" routerLinkActive="active">
+        <clr-icon clrVerticalNavIcon shape="map"></clr-icon>
+        Map</a>
+      <a clrVerticalNavLink routerLink="data" routerLinkActive="active">
+        <clr-icon clrVerticalNavIcon shape="curve-chart"></clr-icon>
+        Data</a>
+      <div class="nav-divider"></div>
+      <!--      <a clrVerticalNavLink routerLink="./credit" routerLinkActive="active">Credit</a>-->
+    </clr-vertical-nav>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
