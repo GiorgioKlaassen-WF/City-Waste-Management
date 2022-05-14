@@ -5,15 +5,25 @@ const bodyParser = require("body-parser");
 const helmet = require('helmet');
 const middleware = require("./middlewares");
 const cors = require('cors');
-
-
-
+const { Server } = require("socket.io");
 
 // routes
 const sensor = require("./routes/sensors");
+const sensorReadings = require("./routes/sensorReadings")
 const mongoose = require("mongoose");
 
 let app = express();
+
+
+const http = require('http');
+const server = http.createServer(app);
+const io = new Server(server);
+
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+});
+
 
 mongoose.connect(`mongodb://localhost:27017/waste`, {
 
@@ -42,6 +52,7 @@ app.use(bodyParser.json());
 
 // routes
 app.use('/api/sensor', sensor);
+app.use('/api/sensor-reading', sensorReadings)
 
 
 
@@ -52,3 +63,7 @@ app.use(middleware.errorHandler);
 app.listen(process.env.PORT, () => {
     console.log(`[Server] Running on port ${process.env.PORT}`)
 });
+
+
+module.exports = {app: app, server: server};
+

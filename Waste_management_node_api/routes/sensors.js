@@ -27,8 +27,26 @@ router.get('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     Sensor.deleteOne({_id: req.params.id})
-        .then((data) => { res.status(200).json({success: true, message: "Deleted successfully"})})
-        .catch((err) => {res.status(400).json("Request Failed")});
+        .then((data) => {
+            res.status(200).json({success: true, message: "Deleted successfully"})
+        })
+        .catch((err) => {
+            res.status(400).json("Request Failed")
+        });
 });
+
+router.get('/map/data', async (req, res) => {
+    const points = await Sensor.aggregate([
+        {
+            $lookup: {
+                from: 'sensorreadings',
+                localField: '_id',
+                foreignField: 'sensorId',
+                as: 'sensors'
+            },
+        }
+    ])
+    res.status(200).json(points)
+})
 
 module.exports = router;
