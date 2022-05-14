@@ -42,7 +42,11 @@ router.get('/map/data', async (req, res) => {
                 from: 'sensorreadings',
                 localField: '_id',
                 foreignField: 'sensorId',
-                as: 'sensors'
+                as: 'sensors',
+                pipeline: [
+                    { $sort: {createdAt: -1}},
+                    { $limit: 1 }
+                ]
             },
         }
     ])
