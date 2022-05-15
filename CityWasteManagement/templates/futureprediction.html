@@ -64,14 +64,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Temperatuur</h1>
-            <a class="btn btn-outline-primary" href="{% url 'index' %}" role="button">Temperatuur</a>
-            <a class="btn btn-outline-primary" href="{% url 'index/humidity' %}" role="button">Luchtvochtigheid</a>
-            <a class="btn btn-outline-primary" href="#" role="button">Fijnstof</a>
-            <a class="btn btn-outline-primary" href="#" role="button">CO2</a>
-            <a class="btn btn-outline-primary" href="#" role="button">VOC</a>
-            <a class="btn btn-outline-primary" href="#" role="button">Co2-equivalent</a>
-            <a class="btn btn-outline-primary" href="#" role="button">Druk</a>
+            <h1 class="h2">Voorspellingen voor: {{date | safe}}</h1>
           </div>
           <style type="text/css">
             .chartbox{
@@ -83,11 +76,11 @@
           </div>
           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
           <script type="text/javascript">
-            const labels = {{labels|safe}};
+            const labels = {{timevalues|safe}};
             const data = {
               labels: labels,
               datasets: [{
-                label: 'Covid19 Confirmed Cases',
+                label: 'Afval',
                 backgroundColor: 'rgb(0, 123, 255)',
                 borderColor: 'rgb(0, 123, 255)',
                 data: {{chartdata|safe}},
@@ -95,15 +88,15 @@
             };
             const config = {
               type: 'bar',
-              data,
+              data: data,
               options: {}
             };
             const myChart = new Chart(
                   document.getElementById('myChart'),
                   config
                 );
-
           </script>
+          </div>
         </main>
       </div>
     </div>
