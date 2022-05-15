@@ -9,6 +9,12 @@
 # wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
 # sudo python3 raspi-blinka.py (hiermee download je alle adafruit dependicies)
 
+# install BME280 --> pip install adafruit-circuitpython-bme280 en of pip install RPi.bme280
+# install DHT -->  sudo pip3 install Adafruit_DHT
+# install PPDN42S --> run eerst  "sudo pigpiod" daarna de file 
+# install CJMI-811 --> sudo pip3 install adafruit-circuitpython-ccs811
+# install SGP30 --> sudo pip3 install adafruit-circuitpython-sgp30
+
 # Enable: I2C, legacy camera, VNC 
 # Raspberry boot/config.txt (in termninal cd /boot enter ...  sudo nano config.txt )
 # uitcommenten in config.txt ---> (hdmi_force_hotplug=1, hdmi_group=1, hdmi_mode=1, hdmi_drive=2, dtparam=i2c_arm=on,
