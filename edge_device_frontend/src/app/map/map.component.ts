@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import * as Leaflet from "leaflet";
+import * as L from "leaflet";
+import { Observable } from "rxjs";
+import { MapService } from "../Services/map.service";
 
 @Component({
   selector: "app-map",
@@ -7,15 +9,30 @@ import * as Leaflet from "leaflet";
   styleUrls: ["./map.component.scss"]
 })
 export class MapComponent implements OnInit {
-  // @ts-ignore
-  style: {};
-  options: Leaflet.MapOptions = {
-    layers: getLayers(),
-    zoom: 15,
-    center: new Leaflet.LatLng(52.36843, 5.22019)
-  };
+  private map: L.Map | L.LayerGroup<any> | undefined;
 
-  constructor() {
+  constructor(private mapService: MapService) {
+  }
+
+  private initMap(): void {
+    this.map = L.map('map', {
+      center: [52.36843, 5.22019],
+      zoom: 15
+    });
+
+    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: ''
+    });
+
+    tiles.addTo(this.map);
+    this.mapService.getMapDataMarkers(this.map)
+
+  }
+
+  ngAfterViewInit(): void {
+    this.initMap();
   }
 
   ngOnInit(): void {
@@ -23,10 +40,3 @@ export class MapComponent implements OnInit {
 
 }
 
-export const getLayers = (): Leaflet.Layer[] => {
-  return [
-    new Leaflet.TileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: ""
-    } as Leaflet.TileLayerOptions)
-  ] as Leaflet.Layer[];
-};
