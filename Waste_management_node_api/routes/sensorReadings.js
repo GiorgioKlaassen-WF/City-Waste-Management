@@ -1,9 +1,11 @@
+require('dotenv').config();
 const express = require("express");
 const router = express.Router();
+const Jimp = require("jimp");
+const https = require('https');
 
 let SensorReading = require('../models/SensorReading')
 let Sensor = require('../models/Sensor')
-
 
 router.get('/', (req, res) => {
     SensorReading.find()
@@ -13,11 +15,7 @@ router.get('/', (req, res) => {
 
 router.post('', async (req, res) => {
 
-    //TODO: get req.body.photo and send it in a request to azure cognitive services end-point and wait for response
-    //TODO: then save the result in the database
-
     // get correct sensor id from database
-
     let sensor = await Sensor.findById(req.body.sensorId).then((data, err) => {
         if (data) {
             return data
@@ -25,8 +23,6 @@ router.post('', async (req, res) => {
             console.log(err)
         }
     })
-
-    console.log(sensor)
 
     let sensorReading;
     sensorReading = new SensorReading({
@@ -47,5 +43,25 @@ router.post('', async (req, res) => {
     sensorReading.save()
         .then((data) => res.status(200).json({ok: true, body: data}))
 })
+
+const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
 
 module.exports = router;
