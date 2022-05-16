@@ -48,6 +48,7 @@ Waste = {
     "sgp30.baseline_TVOC":Source.sgp30.baseline_TVOC
   },
 
+  #g=Gpio r=Ratio c=concentration pcs per 0.01 cubic foot
    "PPD42NS":{
     "g":Source.g, 
     "r":Source.r,
