@@ -37,7 +37,7 @@ data = bme280.sample(bus, address, calibration_params)
 #Initalize Camera
 camera = PiCamera()
 camera.start_preview()
-for i in range(5):
+for i in range(100):
     sleep(5)
     camera.capture('/home/pi/Documents/Waste/Camera/image%s.jpg' % i)
 camera.stop_preview()
