@@ -12,6 +12,7 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { SensorsComponent } from './sensors/sensors.component';
 import { HttpClientModule } from "@angular/common/http";
+import { SensorInfoComponent } from './sensor-info/sensor-info.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { HttpClientModule } from "@angular/common/http";
     MapComponent,
     DataComponent,
     SensorsComponent,
+    SensorInfoComponent,
   ],
   imports: [
     BrowserModule,
