@@ -14,6 +14,8 @@ router.get('/', (req, res) => {
 });
 
 router.post('', async (req, res) => {
+// request naar azure cognitive services
+    
 
     // get correct sensor id from database
     let sensor = await Sensor.findById(req.body.sensorId).then((data, err) => {

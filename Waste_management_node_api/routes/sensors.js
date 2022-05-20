@@ -4,7 +4,7 @@ const router = express.Router();
 let Sensor = require('../models/Sensor');
 
 router.get('/', (req, res) => {
-    Sensor.find()
+    getAllData()
         .then((data) => res.status(200).json(data))
         .catch((err) => res.status(400).json(err))
 });
@@ -52,5 +52,22 @@ router.get('/map/data', async (req, res) => {
     ])
     res.status(200).json(points)
 })
+
+let getAllData = async () => {
+    return Sensor.aggregate([
+        {
+            $lookup: {
+                from: 'sensorreadings',
+                localField: '_id',
+                foreignField: 'sensorId',
+                as: 'sensors',
+                pipeline: [
+                    {$sort: {createdAt: -1}},
+                    {$limit: 1}
+                ]
+            },
+        }
+    ]);
+}
 
 module.exports = router;
