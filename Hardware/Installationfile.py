@@ -12,7 +12,7 @@
 # install DHT -->  sudo pip3 install Adafruit_DHT
 # install PPDN42S --> run eerst  "sudo pigpiod" daarna de file 
 # install CJMI-811 --> sudo pip3 install adafruit-circuitpython-ccs811
-# install SGP30 --> sudo pip3 install adafruit-circuitpython-sgp30
+# install SGP30 --> sudo pip3 install adafruit-circuitpython-sgp30 (Gebruiken wij niet meer)
 
 # Enable: I2C, legacy camera, VNC 
 # Raspberry boot/config.txt (in termninal cd /boot enter ...  sudo nano config.txt )
