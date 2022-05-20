@@ -5,9 +5,8 @@
 
 
 # cd ~
-# sudo pip3 install --upgrade adafruit-python-shell
-# wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
-# sudo python3 raspi-blinka.py (hiermee download je alle adafruit dependicies)
+# sudo pip3 install --upgrade adafruit-python-shell wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py sudo python3 raspi-blinka.py 
+#(hiermee download je alle adafruit dependicies)
 
 # install BME280 --> pip install adafruit-circuitpython-bme280 en of pip install RPi.bme280
 # install DHT -->  sudo pip3 install Adafruit_DHT
