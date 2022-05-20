@@ -22,3 +22,17 @@ services:
       - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
+  api:
+    container_name: Waste_Api
+    build: ./Waste_management_node_api
+    restart: always
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    restart: always
+    image: mongo
+    ports:
+      - "27017:27017"
