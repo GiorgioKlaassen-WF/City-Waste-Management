@@ -1,3 +1,21 @@
+
+<div class="clr-row" style="padding-bottom: 2em">
+  <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
+    <div class="card">
+      <h3 class="card-header">Sensor info</h3>
+      <div class="card-block">
+        <div class="card-text">
+          Latitude: {{device.sensor.location.lat}}, Longitude: Latitude: {{device.sensor.location.lon}}
+          <br>
+          Created at: {{device.sensor.createdAt | date}}
+<!--          <br>-->
+<!--          Last updated on: {{device.sensor.updatedAt | date}}-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div *ngFor="let series of SensorReading; index as i">
   <app-map-ecaptulation [data]="series"></app-map-ecaptulation>
 </div>

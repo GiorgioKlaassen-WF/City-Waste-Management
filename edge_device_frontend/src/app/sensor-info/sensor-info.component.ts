@@ -44,7 +44,7 @@ export class SensorInfoComponent implements OnInit {
       this.SensorReading?.push(this.mapCO2Data(deviceData))
       this.SensorReading?.push(this.mapHumiData(deviceData))
       this.SensorReading?.push(this.mapTVOCData(deviceData))
-
+      console.log(this.device)
     });
   }
 

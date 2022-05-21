@@ -16,7 +16,6 @@ export class MapEncapsulationComponent implements OnInit {
 
   @Input() data: any;
 
-
   MapSeries: any[] | undefined;
   pipe = new DatePipe('en-US');
   view: any[] = [700, 300];
@@ -42,6 +41,7 @@ export class MapEncapsulationComponent implements OnInit {
 
   ngOnInit(): void {
     this.MapSeries = this.data
+    // @ts-ignore
   }
 
 }
