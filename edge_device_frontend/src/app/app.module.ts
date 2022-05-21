@@ -13,6 +13,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { SensorsComponent } from './sensors/sensors.component';
 import { HttpClientModule } from "@angular/common/http";
 import { SensorInfoComponent } from './sensor-info/sensor-info.component';
+import { MapEncapsulationComponent } from './map-ecaptulation/map-encapsulation.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { SensorInfoComponent } from './sensor-info/sensor-info.component';
     DataComponent,
     SensorsComponent,
     SensorInfoComponent,
+    MapEncapsulationComponent,
   ],
   imports: [
     BrowserModule,

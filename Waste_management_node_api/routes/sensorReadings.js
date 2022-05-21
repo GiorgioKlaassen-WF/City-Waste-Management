@@ -14,8 +14,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('', async (req, res) => {
-// request naar azure cognitive services
-    
 
     // get correct sensor id from database
     let sensor = await Sensor.findById(req.body.sensorId).then((data, err) => {
@@ -46,24 +44,5 @@ router.post('', async (req, res) => {
         .then((data) => res.status(200).json({ok: true, body: data}))
 })
 
-const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
-    const byteCharacters = atob(b64Data);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        const byteNumbers = new Array(slice.length);
-        for (let i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        const byteArray = new Uint8Array(byteNumbers);
-        byteArrays.push(byteArray);
-    }
-
-    const blob = new Blob(byteArrays, {type: contentType});
-    return blob;
-}
 
 module.exports = router;
