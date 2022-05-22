@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DeviceService } from "../Services/device.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-sensors',
@@ -11,13 +12,15 @@ export class SensorsComponent implements OnInit {
   public devices: any;
 
 
-  constructor(private deviceService: DeviceService) { }
+  constructor(private deviceService: DeviceService, private router: Router) { }
 
   ngOnInit(): void {
     this.deviceService.getDevices().subscribe((data) => {
       this.devices = data;
-      console.log(data)
     })
   }
 
+  goToSensorView(id: any) {
+    this.router.navigate([`/sensor/${id}`]);
+  }
 }

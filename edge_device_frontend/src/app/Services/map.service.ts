@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import * as L from "leaflet";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root"
@@ -9,7 +10,7 @@ export class MapService {
 
   private url = "http://localhost:3000/api/";
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   // @ts-ignore
@@ -29,6 +30,7 @@ export class MapService {
   }
 
   private MapDataMarkerPopUp(data:any): string{
+    console.log(data)
     if (data.sensors[0] != undefined){
       let sensorData = data.sensors[0].sensors
       return `` +
@@ -38,9 +40,9 @@ export class MapService {
         `<div>TVOC: ${ sensorData.TVOCSensor}</div>` +
         `<div>eCO2: ${ sensorData.eCO2Sensor}</div>` +
         `<div>Air Pressure: ${ sensorData.pressureSensor}</div>` +
-        `<div>CO2eq: ${ sensorData.CO2eqSensor}</div>`
+        `<div>CO2eq: ${ sensorData.CO2eqSensor}</div>` +
+        `<a class="btn btn-primary" href="/sensor/${data._id}" >Go to Sensor</a>`
     }
     return "No Data"
   }
-
 }
