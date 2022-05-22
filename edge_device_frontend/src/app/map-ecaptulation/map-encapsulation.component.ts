@@ -1,12 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { DatePipe } from "@angular/common";
 
-interface SizeInterface {
-  x: number
-  y: number
-}
-
-
 @Component({
   selector: 'app-map-ecaptulation',
   templateUrl: './map-encapsulation.component.html',
@@ -41,7 +35,6 @@ export class MapEncapsulationComponent implements OnInit {
 
   ngOnInit(): void {
     this.MapSeries = this.data
-    // @ts-ignore
   }
 
 }

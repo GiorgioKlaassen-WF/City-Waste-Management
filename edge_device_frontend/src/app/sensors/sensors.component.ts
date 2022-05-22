@@ -17,7 +17,6 @@ export class SensorsComponent implements OnInit {
   ngOnInit(): void {
     this.deviceService.getDevices().subscribe((data) => {
       this.devices = data;
-      console.log(data)
     })
   }
 
