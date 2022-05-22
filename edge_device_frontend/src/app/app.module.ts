@@ -15,6 +15,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { SensorInfoComponent } from './sensor-info/sensor-info.component';
 import { MapEncapsulationComponent } from './map-ecaptulation/map-encapsulation.component';
 import { SocketIoConfig, SocketIoModule } from "ngx-socket-io";
+import { HomePanelComponent } from './home-panel/home-panel.component';
 
 
 const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
@@ -29,6 +30,7 @@ const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
     SensorsComponent,
     SensorInfoComponent,
     MapEncapsulationComponent,
+    HomePanelComponent,
   ],
   imports: [
     BrowserModule,

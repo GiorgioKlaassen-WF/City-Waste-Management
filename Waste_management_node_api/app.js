@@ -12,15 +12,19 @@ const io = require('socket.io')(http, {
         methods: ["GET", "POST"]
     }
 });
-
+// {msg: "Connected to API", id: socket.id, connectionCount: io.sockets.server.engine.clientsCount}
 
 io.on('connection', socket => {
     console.log(io.sockets.server.engine.clientsCount);
     console.log(`Socket ${socket.id} has connected`);
-    socket.emit('connection', {msg: "Hello world", id: socket.id, connectionCount: io.sockets.server.engine.clientsCount});
+    io.emit('connection', {msg: "Connected to API", id: socket.id, connectionCount: io.sockets.server.engine.clientsCount});
 
+    socket.on("disconnecting", (reason) => {
+        console.log(reason)
+        console.log(io.sockets.server.engine.clientsCount)
+        io.emit('connection', {msg: "Connected to API", id: socket.id, connectionCount: io.sockets.server.engine.clientsCount});
+    })
 });
-
 
 
 

@@ -1,1 +1,13 @@
 <p>home works!</p>
+{{status| json}}
+
+<div class="clr-row">
+  <div class="clr-col-lg-6 clr-col-12" *ngFor="let item of infoArray">
+    <app-home-panel
+      icon="{{item?.icon}}"
+      iconShape="{{item.iconShape}}"
+      title="{{item.title}}"
+      text="{{item.text}}">
+    </app-home-panel>
+  </div>
+</div>
