@@ -14,7 +14,10 @@ import { SensorsComponent } from './sensors/sensors.component';
 import { HttpClientModule } from "@angular/common/http";
 import { SensorInfoComponent } from './sensor-info/sensor-info.component';
 import { MapEncapsulationComponent } from './map-ecaptulation/map-encapsulation.component';
+import { SocketIoConfig, SocketIoModule } from "ngx-socket-io";
 
+
+const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
@@ -35,6 +38,7 @@ import { MapEncapsulationComponent } from './map-ecaptulation/map-encapsulation.
     BrowserAnimationsModule,
     LeafletModule,
     HttpClientModule,
+    SocketIoModule.forRoot(config),
   ],
   providers: [],
   bootstrap: [AppComponent]

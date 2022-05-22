@@ -71,5 +71,4 @@ let GetAllSensorDataFromOne = async (id) => {
     return {"sensor": sensor, "readings": readings};
 }
 
-
 module.exports = router;
