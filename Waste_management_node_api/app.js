@@ -8,11 +8,16 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http, {
     cors: {
-        origin: "http://localhost:4200",
+        origin: "*",
         methods: ["GET", "POST"]
     }
 });
-// {msg: "Connected to API", id: socket.id, connectionCount: io.sockets.server.engine.clientsCount}
+
+app.use((req, res, next) => {
+    req.io = io;
+    return next();
+});
+
 
 io.on('connection', socket => {
     console.log(io.sockets.server.engine.clientsCount);

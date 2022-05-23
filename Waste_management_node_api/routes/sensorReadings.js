@@ -40,6 +40,8 @@ router.post('', async (req, res) => {
         trash: false,
     });
 
+    req.io.emit("logs", { sensorReading: sensorReading });
+
     sensorReading.save()
         .then((data) => res.status(200).json({ok: true, body: data}))
 })

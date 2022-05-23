@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map } from "rxjs";
+import { map, Subscription } from "rxjs";
 import { Socket } from "ngx-socket-io";
 
 
@@ -15,6 +15,10 @@ export class WebsocketService {
 
   getMessage() {
     return this.socket.fromEvent('connection').pipe(map((data) => data));
+  }
+
+  getLogs(): any {
+    return this.socket.fromEvent('logs').pipe(map((data) => data));
   }
 
 
