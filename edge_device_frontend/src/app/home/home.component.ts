@@ -15,6 +15,7 @@ interface IinfoArray {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit {
 
   private wssSub: Subscription | undefined;
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit {
 
 
   constructor(private wss: WebsocketService) {
-    this.wssSub = this.wss.getMessage().subscribe((data) => {
+    this.wssSub = this.wss.getMessage().subscribe((data: any) => {
       // @ts-ignore
       this.connectionCount = data.connectionCount
       this.status = data

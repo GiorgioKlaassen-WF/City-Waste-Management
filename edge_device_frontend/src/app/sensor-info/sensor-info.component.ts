@@ -14,6 +14,15 @@ export class SensorInfoComponent implements OnInit {
   largeObject: any;
   pipe = new DatePipe('en-US');
 
+  single: any[] | undefined;
+  view: any[] = [500, 350];
+
+  colorScheme = {
+    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+  };
+  cardColor: string = '#e8e8e8';
+
+
   public device: any | undefined;
 
   constructor(private deviceService: DeviceService, private route: ActivatedRoute) {
@@ -35,6 +44,36 @@ export class SensorInfoComponent implements OnInit {
         this.mapTVOCData(deviceData)[0]
       ]
     });
+
+    this.deviceService.getLatestReading(id).subscribe( (latestReading: any) => {
+      this.single = [
+        {
+          "name": "CO2 (ppm)",
+          "value": latestReading?.sensors?.eCO2Sensor,
+        },
+        {
+          "name": "TVOC (ppb)",
+          "value": latestReading?.sensors?.TVOCSensor
+        },
+        {
+          "name": "Particle matter",
+          "value": latestReading?.sensors?.dustSensor
+        },
+        {
+          "name": "Temperature",
+          "value": latestReading?.sensors?.tempSensor + "C°"
+        },
+        {
+          "name": "Humidity",
+          "value": latestReading?.sensors?.humiSensor + "% RHm"
+        },
+        {
+          "name": "Air Pressure",
+          "value": latestReading?.sensors.pressureSensor + "Pa"
+        }
+      ];
+    })
+
   }
 
   mapTempData(deviceData: any) {

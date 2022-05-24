@@ -1,4 +1,3 @@
-
 <div class="clr-row" style="padding-bottom: 2em">
   <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
     <div class="card">
@@ -8,9 +7,27 @@
           Latitude: {{device?.sensor?.location?.lat}}, Longitude: {{device?.sensor?.location?.lon}}
           <br>
           Created at: {{device.sensor?.createdAt | date}}
+          <br>
         </div>
       </div>
     </div>
+    <div class="card">
+      <h3 class="card-header">
+        Latest reading
+      </h3>
+      <div class="card-block">
+        <div class="card-text" style="height: 360px; width: 350px">
+          <ngx-charts-number-card
+            [view]="view"
+            [scheme]="colorScheme"
+            [results]="single"
+            [cardColor]="cardColor">
+          </ngx-charts-number-card>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </div>
 
