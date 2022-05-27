@@ -6,13 +6,15 @@
 
 # cd ~
 # sudo pip3 install --upgrade adafruit-python-shell wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py sudo python3 raspi-blinka.py 
-#(hiermee download je alle adafruit dependicies)
+# (hiermee download je alle adafruit dependicies)
 
 # install BME280 --> pip install adafruit-circuitpython-bme280 en of pip install RPi.bme280
-# install DHT -->  sudo pip3 install Adafruit_DHT
 # install PPDN42S --> run eerst  "sudo pigpiod" daarna de file 
-# install CJMI-811 --> sudo pip3 install adafruit-circuitpython-ccs811
-# install SGP30 --> sudo pip3 install adafruit-circuitpython-sgp30 (Gebruiken wij niet meer)
+# install SGP30 --> sudo pip3 install adafruit-circuitpython-sgp30
+
+# (NOT IN USE can be also used for temp + humidity incase BME280 doesnt work) install DHT -->  sudo pip3 install Adafruit_DHT
+# (NOT IN USE can replace SGP30) install CJMI-811 --> sudo pip3 install adafruit-circuitpython-ccs811
+
 
 # Enable: I2C, legacy camera, VNC 
 # Raspberry boot/config.txt (in termninal cd /boot enter ...  sudo nano config.txt )
