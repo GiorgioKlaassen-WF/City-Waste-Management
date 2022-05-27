@@ -1,61 +1,70 @@
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
 
-# SGP30
-
+from pickle import NONE
+import smbus2
+import bme280
 import time
 import board
 import busio
-import smbus2
-import pigpio
-import adafruit_dht
-import adafruit_ccs811
-import bme280
 import adafruit_sgp30
+import pigpio
 from picamera import PiCamera
 from time import sleep
+import base64
+import os
 
-#BME280
+x = None
+
 port = 1
 address = 0x76
 bus = smbus2.SMBus(port)
 
-# uses board.SCL and board.SDA CCS811
-i2c = board.I2C() 
-i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
-
-# Initial the dht + ccs811 + SGP30 device, with data pin connected to:
-dhtDevice = adafruit_dht.DHT22(23)
-ccs811 = adafruit_ccs811.CCS811(i2c)
-sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
-
 # Calibration BME280
 calibration_params = bme280.load_calibration_params(bus, address)
-
-# the sample method will take a single reading and return a
-# compensated_reading object
 data = bme280.sample(bus, address, calibration_params)
 
-#Initalize Camera
-camera = PiCamera()
-camera.start_preview()
-for i in range(5):
-    sleep(1)
-    camera.capture('/home/pi/Documents/Waste/Camera/image%s.jpg' % i)
-camera.stop_preview()
-
-#Initalize SGP30
-print("SGP30 serial #", [hex(i) for i in sgp30.serial])
+# Create library object on our I2C port SGP30
+i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
+sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
 sgp30.iaq_init()
 sgp30.set_iaq_baseline(0x8973, 0x8AAE)
-#sgp30.set_iaq_relative_humidity(celcius=22.1, relative_humidity=44)
 elapsed_sec = 0
 
-#Initalize PPD42NS
+
+
+
+# -- Initialize Picamera --
+camera = PiCamera()
+
+camera.start_preview()
+for i in range(5):
+    sleep(0.1)
+    camera.capture('/home/pi/Documents/Waste/Camera/image%s.jpg' % i)
+camera.stop_preview()
+camera.close()
+
+# -- Initializa PPD42NS
 class sensor:
-   
+    """
+    A class to read a Shinyei PPD42NS Dust Sensor, e.g. as used
+    in the Grove dust sensor.
+
+    This code calculates the percentage of low pulse time and
+    calibrated concentration in particles per 1/100th of a cubic
+    foot at user chosen intervals.
+
+    You need to use a voltage divider to cut the sensor output
+    voltage to a Pi safe 3.3V (alternatively use an in-line
+    20k resistor to limit the current at your own risk).
+    """
+
     def __init__(self, pi, gpio):
-       
+        """
+        Instantiate with the Pi and gpio to which the sensor
+        is connected.
+        """
+
         self.pi = pi
         self.gpio = gpio
 
@@ -69,7 +78,16 @@ class sensor:
         self._cb = pi.callback(gpio, pigpio.EITHER_EDGE, self._cbf)
 
     def read(self):
-       
+        """
+        Calculates the percentage low pulse time and calibrated
+        concentration in particles per 1/100th of a cubic foot
+        since the last read.
+
+        For proper calibration readings should be made over
+        30 second intervals.
+
+        Returns a tuple of gpio, percentage, and concentration.
+        """
         interval = self._low_ticks + self._high_ticks
 
         if interval > 0:
@@ -109,51 +127,24 @@ class sensor:
 
 
 
-
-while not ccs811.data_ready:
-    pass
-
-
-# PPD42NS
 if __name__ == "__main__":
 
-    import time
-    import pigpio
-    import PPD42NS
+    import Source
 
     pi = pigpio.pi()  # Connect to Pi.
 
-    s = PPD42NS.sensor(pi, 20)
+    s = Source.sensor(pi, 20)
 
-while True:
-    try:
-        # Print the values to the serial port DHT22
-        temperature_c = dhtDevice.temperature
-        temperature_f = temperature_c * (9 / 5) + 32
-        humidity = dhtDevice.humidity
-        print(
-            "Temp: {:.1f} F / {:.1f} C    Humidity: {}% ".format(
-                temperature_f, temperature_c, humidity
-            )
-        )
 
-        # Print the values from ccs811
-        print("CO2: {} PPM, TVOC: {} PPB".format(
-            ccs811.eco2, ccs811.tvoc
-            )
-        )
+    while True: 
 
-        # the compensated_reading class has the following attributes BME280
-        print(data.id)
-        print(data.timestamp)
+        # BME280 Temp + Pressure + humidity
         print(data.temperature)
-        print(data.pressure)
         print(data.humidity)
-        print(data)
+        print(data.pressure)
 
-        # Print the values from SGP30
+        #SGP30 CO2 + TVOC
         print("eCO2 = %d ppm \t TVOC = %d ppb" % (sgp30.eCO2, sgp30.TVOC))
-        time.sleep(1)
         elapsed_sec += 1
         if elapsed_sec > 10:
             elapsed_sec = 0
@@ -162,23 +153,16 @@ while True:
                 % (sgp30.baseline_eCO2, sgp30.baseline_TVOC)
             )
 
-        # Print PPD42NS
-        time.sleep(1)  # Use 30 for a properly calibrated reading.
+        #PPD42NS Dustsensor
+        time.sleep(0.5)  # Use 30 for a properly calibrated reading.
 
         g, r, c = s.read()
+        x = c
 
-        print("gpio={} ratio={:.1f} conc={} pcs per 0.01 cubic foot".
-              format(g, r, int(c)))
+        #print("gpio={} ratio={:.1f} conc={} pcs per 0.01 cubic foot".
+        #        format(g, r, int(c)))
+        print(c)
+        #pi.stop()  # Disconnect from Pi.
+        pi.stop()
 
-
-
-    except RuntimeError as error:
-        # Errors happen fairly often, DHT's are hard to read, just keep going
-        print(error.args[0])
-        time.sleep(2.0)
-        continue
-    except Exception as error:
-        dhtDevice.exit()
-        raise error
-
-    time.sleep(2.0)
+        
