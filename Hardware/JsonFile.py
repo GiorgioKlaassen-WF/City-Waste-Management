@@ -1,15 +1,13 @@
 import json 
 import requests
+import time 
 import Source
 import base64
 import os
 
 
-url= 'http://localhost:3000/post'
+#url= 'http://localhost:3000/post'
 
-response = requests.post('/post')
-response.status_code
-response.json()
 
 image_file = 'sample_image.png'
 
@@ -20,17 +18,21 @@ for x in os.listdir("/Waste/Camera"):
   photo = {x:im_b64}
 
 
-{
+postbody = {
 	"sensorId": "",
 	"sensorss": {
 		"tempSensor": Source.temperature_c,
 		"humiSensor": Source.humidity,
-		"dustSensor": Source.c,
-		"eCO2Sensor": Source.ccs811.eco2,
+		"dustSensor": Source.s,
+		"eCO2Sensor": Source.sgp30.baseline_eCO2,
 		"TVOCSensor": Source.ccs811.tvoc,
-		"CO2Sensor": 458,
-		"CO2eqSensor" : 450,
+		"CO2Sensor": Source.ccs811.eco2,
+        "CO2eqSensor" : Source.sgp30.baseline_eCO2,
 		"pressureSensor": Source.data.pressure
 	},
-	"image": "photo"
+	"image": photo
 }
+
+response = requests.post('http://localhost:3000/api/sensor-reading', json=postbody)
+response.status_code
+response.json()
