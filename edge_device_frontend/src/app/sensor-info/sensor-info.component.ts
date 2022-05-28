@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { DeviceService } from "../Services/device.service";
 import { ActivatedRoute } from "@angular/router";
 import { DatePipe } from '@angular/common'
+import { Subscription } from "rxjs";
+import { WebsocketService } from "../Services/websocket.service";
 
 @Component({
   selector: "app-sensor-info",
@@ -22,10 +24,13 @@ export class SensorInfoComponent implements OnInit {
   };
   cardColor: string = '#e8e8e8';
 
-
+  private wssSub : Subscription;
   public device: any | undefined;
 
-  constructor(private deviceService: DeviceService, private route: ActivatedRoute) {
+  constructor(private deviceService: DeviceService, private route: ActivatedRoute, private wss: WebsocketService) {
+    this.wssSub = this.wss.getLogs().subscribe((data: any) => {
+      this.single = this.formatChart(data.sensorReading)
+    })
   }
 
   ngOnInit(): void {
@@ -44,37 +49,12 @@ export class SensorInfoComponent implements OnInit {
         this.mapTVOCData(deviceData)[0]
       ]
     });
-
     this.deviceService.getLatestReading(id).subscribe( (latestReading: any) => {
-      this.single = [
-        {
-          "name": "CO2 (ppm)",
-          "value": latestReading?.sensors?.eCO2Sensor,
-        },
-        {
-          "name": "TVOC (ppb)",
-          "value": latestReading?.sensors?.TVOCSensor
-        },
-        {
-          "name": "Particle matter",
-          "value": latestReading?.sensors?.dustSensor
-        },
-        {
-          "name": "Temperature",
-          "value": latestReading?.sensors?.tempSensor + "C°"
-        },
-        {
-          "name": "Humidity",
-          "value": latestReading?.sensors?.humiSensor + "% RHm"
-        },
-        {
-          "name": "Air Pressure",
-          "value": latestReading?.sensors.pressureSensor + "Pa"
-        }
-      ];
+      this.single = this.formatChart(latestReading);
     })
 
   }
+
 
   mapTempData(deviceData: any) {
     let readings = deviceData.readings;
@@ -146,6 +126,39 @@ export class SensorInfoComponent implements OnInit {
       "series": seriesData
     }]
     return TVOCSeries
+  }
+
+  formatChart(latestReading: any){
+    return [
+      {
+        "name": "CO2 (ppm)",
+        "value": latestReading?.sensors?.eCO2Sensor,
+      },
+      {
+        "name": "TVOC (ppb)",
+        "value": latestReading?.sensors?.TVOCSensor
+      },
+      {
+        "name": "Particle matter",
+        "value": latestReading?.sensors?.dustSensor
+      },
+      {
+        "name": "Temperature",
+        "value": latestReading?.sensors?.tempSensor + "C°"
+      },
+      {
+        "name": "Humidity",
+        "value": latestReading?.sensors?.humiSensor + "% RHm"
+      },
+      {
+        "name": "Air Pressure",
+        "value": latestReading?.sensors.pressureSensor + "Pa"
+      },
+      {
+        "name": "Trash",
+        "value": latestReading?.trash
+      }
+    ]
   }
 
 

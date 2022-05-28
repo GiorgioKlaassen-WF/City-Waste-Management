@@ -6,7 +6,7 @@
         <div class="card-text">
           Latitude: {{device?.sensor?.location?.lat}}, Longitude: {{device?.sensor?.location?.lon}}
           <br>
-          Created at: {{device.sensor?.createdAt | date}}
+          Created at: {{device.sensor.createdAt | date}}
           <br>
         </div>
       </div>
@@ -37,3 +37,4 @@
 <div *ngFor="let series of SensorReading; index as i">
   <app-map-ecaptulation [data]="series"></app-map-ecaptulation>
 </div>
+

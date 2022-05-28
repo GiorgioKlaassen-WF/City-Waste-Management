@@ -1,11 +1,12 @@
 require('dotenv').config();
 const express = require("express");
 const router = express.Router();
-const Jimp = require("jimp");
-const https = require('https');
+let axios = require("axios").default;
+
 
 let SensorReading = require('../models/SensorReading')
 let Sensor = require('../models/Sensor')
+
 
 router.get('/', (req, res) => {
     SensorReading.find()
@@ -14,6 +15,32 @@ router.get('/', (req, res) => {
 });
 
 router.post('', async (req, res) => {
+
+
+    const buffer = Buffer.from(req.body.image, "base64");
+    let trash = false;
+
+
+    let options = {
+        method: 'POST',
+        url: 'https://smartcity-customvision.cognitiveservices.azure.com/customvision/v3.0/Prediction/aa0ddd12-f0a8-4ddd-bbc0-91828251163e/classify/iterations/V1/image',
+        headers: {
+            'Prediction-Key': '3c2208773abd44bcaf5cd81792975211',
+            'Content-Type': 'application/octet-stream'
+        },
+        data: buffer,
+    };
+
+    axios.request(options).then(function (response) {
+        let predictions = response.data.predictions[0]
+        if (predictions.tagName === 'Trash') {
+            trash = true
+        }
+    }).catch(function (error) {
+        console.error(error);
+    })
+    console.log("Trash detected: ", trash)
+
 
     // get correct sensor id from database
     let sensor = await Sensor.findById(req.body.sensorId).then((data, err) => {
@@ -37,7 +64,7 @@ router.post('', async (req, res) => {
             CO2eqSensor: req.body.sensors.CO2eqSensor,
             pressureSensor: req.body.sensors.pressureSensor
         },
-        trash: false,
+        trash: trash,
     });
 
     req.io.emit("logs", { sensorReading: sensorReading });
