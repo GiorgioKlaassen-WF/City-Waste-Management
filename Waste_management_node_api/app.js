@@ -29,8 +29,8 @@ io.on('connection', (socket) => {
     console.log('a user connected');
 });
 
-mongoose.connect(`mongodb://localhost:27017/waste`, {
-// mongoose.connect(`mongodb://mongo:27017/waste`, {
+// mongoose.connect(`mongodb://localhost:27017/waste`, {
+mongoose.connect(`mongodb://mongo:27017/waste`, {
 
     // mongo settings:
     useNewUrlParser: true,
