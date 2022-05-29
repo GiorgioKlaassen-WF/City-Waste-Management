@@ -79,7 +79,8 @@
               "browserTarget": "edge_device_frontend:build:production"
             },
             "development": {
-              "browserTarget": "edge_device_frontend:build:development"
+              "browserTarget": "edge_device_frontend:build:development",
+              "proxyConfig":"src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

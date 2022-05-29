@@ -31,11 +31,20 @@ router.get('/:id', (req, res) => {
         .catch((err) => res.status(400).json({error: err}))
 });
 
+
 router.get('/:id/data', (req, res) => {
     GetAllSensorDataFromOne(req.params.id)
         .then((data) => res.status(200).json(data))
         .catch((err) => res.status(400).json({error: err}))
 });
+
+router.get('/:id/latest', async (req, res) => {
+    let sensor = await Sensor.findById(req.params.id);
+    // await SensorReadings.find({'sensorId' : sensor['_id']}, {}, {sort: { 'created_at': -1}}).limit(1)
+    await SensorReadings.find({'sensorId' : sensor['_id']}, {}).sort({ createdAt: -1 }).limit(1)
+        .then((data) => res.status(200).json(data[0]))
+        .catch((err) => res.status(400).json({error: err}))
+})
 
 router.delete('/:id', (req, res) => {
     Sensor.deleteOne({_id: req.params.id})
@@ -67,9 +76,8 @@ let getAllData = async () => {
 
 let GetAllSensorDataFromOne = async (id) => {
     let sensor = await Sensor.findById(id)
-    let readings = await SensorReadings.find({'sensorId' : sensor['_id']}, {}, {sort: { 'created_at': -1}}).limit(30)
+    let readings = await SensorReadings.find({'sensorId' : sensor['_id']}, {}, { sort: { createdAt: -1}, limit: 30})
     return {"sensor": sensor, "readings": readings};
 }
-
 
 module.exports = router;

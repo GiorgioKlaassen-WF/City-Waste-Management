@@ -18,5 +18,9 @@ export class DeviceService {
     return this.http.get(this.url + `sensor/${id}/data`)
   }
 
+  public getLatestReading(id: string | null) {
+    return this.http.get(this.url + `sensor/${id}/latest`)
+  }
+
 
 }

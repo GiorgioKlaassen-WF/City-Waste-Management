@@ -30,7 +30,6 @@ export class MapService {
   }
 
   private MapDataMarkerPopUp(data:any): string{
-    console.log(data)
     if (data.sensors[0] != undefined){
       let sensorData = data.sensors[0].sensors
       return `` +
