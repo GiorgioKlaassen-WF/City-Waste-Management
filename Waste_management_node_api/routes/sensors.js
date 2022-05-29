@@ -76,7 +76,7 @@ let getAllData = async () => {
 
 let GetAllSensorDataFromOne = async (id) => {
     let sensor = await Sensor.findById(id)
-    let readings = await SensorReadings.find({'sensorId' : sensor['_id']}, {}, {sort: { 'created_at': -1}}).limit(30)
+    let readings = await SensorReadings.find({'sensorId' : sensor['_id']}, {}, { sort: { createdAt: -1}, limit: 30})
     return {"sensor": sensor, "readings": readings};
 }
 

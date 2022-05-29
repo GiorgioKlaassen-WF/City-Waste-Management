@@ -3,7 +3,7 @@
     <div class="card">
       <h3 class="card-header">Sensor info</h3>
       <div class="card-block">
-        <div class="card-text">
+        <div class="card-text" *ngIf="device != undefined">
           Latitude: {{device?.sensor?.location?.lat}}, Longitude: {{device?.sensor?.location?.lon}}
           <br>
           Created at: {{device.sensor.createdAt | date}}
@@ -31,7 +31,7 @@
   </div>
 </div>
 
-<app-map-ecaptulation [data]="largeObject"></app-map-ecaptulation>
+<app-map-ecaptulation *ngIf="largeObject != undefined" [data]="largeObject"></app-map-ecaptulation>
 
 
 <div *ngFor="let series of SensorReading; index as i">
