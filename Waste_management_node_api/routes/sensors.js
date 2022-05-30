@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 let Sensor = require('../models/Sensor');
+let SensorReadings = require('../models/SensorReading');
 
 router.get('/', (req, res) => {
-    Sensor.find()
+    getAllData()
         .then((data) => res.status(200).json(data))
         .catch((err) => res.status(400).json(err))
 });
@@ -19,11 +20,31 @@ router.post('', (req, res) => {
 
 })
 
+router.get('/map/data', async (req, res) => {
+    const points = await getAllData()
+    res.status(200).json(points)
+})
+
 router.get('/:id', (req, res) => {
     Sensor.findById(req.params.id)
         .then((data) => res.status(200).json({found: data}))
         .catch((err) => res.status(400).json({error: err}))
 });
+
+
+router.get('/:id/data', (req, res) => {
+    GetAllSensorDataFromOne(req.params.id)
+        .then((data) => res.status(200).json(data))
+        .catch((err) => res.status(400).json({error: err}))
+});
+
+router.get('/:id/latest', async (req, res) => {
+    let sensor = await Sensor.findById(req.params.id);
+    // await SensorReadings.find({'sensorId' : sensor['_id']}, {}, {sort: { 'created_at': -1}}).limit(1)
+    await SensorReadings.find({'sensorId' : sensor['_id']}, {}).sort({ createdAt: -1 }).limit(1)
+        .then((data) => res.status(200).json(data[0]))
+        .catch((err) => res.status(400).json({error: err}))
+})
 
 router.delete('/:id', (req, res) => {
     Sensor.deleteOne({_id: req.params.id})
@@ -35,8 +56,9 @@ router.delete('/:id', (req, res) => {
         });
 });
 
-router.get('/map/data', async (req, res) => {
-    const points = await Sensor.aggregate([
+
+let getAllData = async () => {
+    return Sensor.aggregate([
         {
             $lookup: {
                 from: 'sensorreadings',
@@ -44,13 +66,18 @@ router.get('/map/data', async (req, res) => {
                 foreignField: 'sensorId',
                 as: 'sensors',
                 pipeline: [
-                    { $sort: {createdAt: -1}},
-                    { $limit: 1 }
+                    {$sort: {createdAt: -1}},
+                    {$limit: 1}
                 ]
             },
         }
-    ])
-    res.status(200).json(points)
-})
+    ]);
+}
+
+let GetAllSensorDataFromOne = async (id) => {
+    let sensor = await Sensor.findById(id)
+    let readings = await SensorReadings.find({'sensorId' : sensor['_id']}, {}, { sort: { createdAt: -1}, limit: 30})
+    return {"sensor": sensor, "readings": readings};
+}
 
 module.exports = router;

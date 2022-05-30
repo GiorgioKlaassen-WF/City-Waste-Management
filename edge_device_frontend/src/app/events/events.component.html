@@ -1,17 +1,19 @@
-<clr-accordion>
-  <clr-accordion-panel>
-    <clr-accordion-title>Priority</clr-accordion-title>
-    <clr-accordion-content *clrIfExpanded>
-      Straatnamen + Waarom het een priority is
-    </clr-accordion-content>
-  </clr-accordion-panel>
+<pre>
+  {{this.logs | json}}
+</pre>
 
-  <clr-accordion-panel>
-    <clr-accordion-title>Warning</clr-accordion-title>
-    <clr-accordion-content *clrIfExpanded>Content 2</clr-accordion-content>
-  </clr-accordion-panel>
-  <clr-accordion-panel>
-    <clr-accordion-title>Info</clr-accordion-title>
-    <clr-accordion-content *clrIfExpanded>Content 3</clr-accordion-content>
-  </clr-accordion-panel>
-</clr-accordion>
+<clr-datagrid>
+  <clr-dg-column>sensor ID</clr-dg-column>
+  <clr-dg-column>Trash</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>CO2 (ppm)</clr-dg-column>
+
+  <clr-dg-row *ngFor="let log of logs">
+    <clr-dg-cell>{{log?.sensorId}}</clr-dg-cell>
+    <clr-dg-cell>{{log?.trash}}</clr-dg-cell>
+    <clr-dg-cell>{{log?.createdAt | date}}</clr-dg-cell>
+    <clr-dg-cell>{{log?.sensors.eCO2Sensor}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{logs?.length}} Sensor readings</clr-dg-footer>
+</clr-datagrid>

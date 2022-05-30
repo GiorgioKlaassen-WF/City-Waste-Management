@@ -1,0 +1,13 @@
+<div class="card clickable">
+  <div class="card-block">
+    <div class="card-title">
+      {{title}}
+    </div>
+    <div class="card-text">
+      <label *ngIf="icon">
+        <clr-icon style="width: 72px; height: 72px;" [attr.shape]="iconShape"></clr-icon>
+      </label>
+      {{text}}
+    </div>
+  </div>
+</div>

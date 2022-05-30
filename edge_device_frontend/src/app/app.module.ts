@@ -13,7 +13,12 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { SensorsComponent } from './sensors/sensors.component';
 import { HttpClientModule } from "@angular/common/http";
 import { SensorInfoComponent } from './sensor-info/sensor-info.component';
+import { MapEncapsulationComponent } from './map-ecaptulation/map-encapsulation.component';
+import { SocketIoConfig, SocketIoModule } from "ngx-socket-io";
+import { HomePanelComponent } from './home-panel/home-panel.component';
 
+
+const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
@@ -24,6 +29,8 @@ import { SensorInfoComponent } from './sensor-info/sensor-info.component';
     DataComponent,
     SensorsComponent,
     SensorInfoComponent,
+    MapEncapsulationComponent,
+    HomePanelComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +40,7 @@ import { SensorInfoComponent } from './sensor-info/sensor-info.component';
     BrowserAnimationsModule,
     LeafletModule,
     HttpClientModule,
+    SocketIoModule.forRoot(config),
   ],
   providers: [],
   bootstrap: [AppComponent]
