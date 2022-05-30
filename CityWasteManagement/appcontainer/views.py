@@ -107,9 +107,5 @@ def future(request):
     data2 = pd.DataFrame(new_candidates,columns= ['tijdstip'])
     y_pred=logistic_regression.predict(data2)
 
-    #chartdata=[]
-    #for value in y_pred:
-                #chartdata.append(value)
-
     return render(request, 'futureprediction.html', {'chartdata': list(y_pred), 'timevalues': timevalues, 'date': date})
 
