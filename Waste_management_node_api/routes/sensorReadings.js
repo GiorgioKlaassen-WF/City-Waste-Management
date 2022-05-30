@@ -16,7 +16,6 @@ router.get('/', (req, res) => {
 
 router.post('', async (req, res) => {
 
-
     const buffer = Buffer.from(req.body.image, "base64");
     let trash = false;
 
@@ -31,14 +30,21 @@ router.post('', async (req, res) => {
         data: buffer,
     };
 
-    axios.request(options).then(function (response) {
-        let predictions = response.data.predictions[0]
-        if (predictions.tagName === 'Trash') {
-            trash = true
-        }
-    }).catch(function (error) {
-        console.error(error);
-    })
+    let customVisionResponse = await axios.request(options)
+    let prediction = customVisionResponse.data.predictions[0]
+    if (prediction.tagName == 'Trash') {
+        trash = true
+    }
+    // axios.request(options).then(function (response) {
+    //     // console.log(response.data)
+    //     console.log(response.data.predictions[0])
+    //     let predictions = response.data.predictions[0]
+    //     if (predictions.tagName == 'Trash') {
+    //         trash = true
+    //     }
+    // }).catch(function (error) {
+    //     console.error(error);
+    // })
     console.log("Trash detected: ", trash)
 
 
@@ -68,6 +74,7 @@ router.post('', async (req, res) => {
     });
 
     req.io.emit("logs", { sensorReading: sensorReading });
+    console.log("send")
 
     sensorReading.save()
         .then((data) => res.status(200).json({ok: true, body: data}))
