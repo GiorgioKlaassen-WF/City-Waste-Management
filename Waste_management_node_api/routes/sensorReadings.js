@@ -19,6 +19,14 @@ router.post('', async (req, res) => {
     const buffer = Buffer.from(req.body.image, "base64");
     let trash = false;
 
+    // get correct sensor id from database
+    let sensor = await Sensor.findById(req.body.sensorId).then((data, err) => {
+        if (data) {
+            return data
+        } else {
+            console.log(err)
+        }
+    })
 
     let options = {
         method: 'POST',
@@ -35,17 +43,7 @@ router.post('', async (req, res) => {
     if (prediction.tagName == 'Trash') {
         trash = true
     }
-    console.log("Trash detected: ", trash)
-
-
-    // get correct sensor id from database
-    let sensor = await Sensor.findById(req.body.sensorId).then((data, err) => {
-        if (data) {
-            return data
-        } else {
-            console.log(err)
-        }
-    })
+    console.log("Trash detected: ", trash + " Sensor: " + sensor._id)
 
     let sensorReading;
     sensorReading = new SensorReading({

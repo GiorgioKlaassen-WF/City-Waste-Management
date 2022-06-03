@@ -1,0 +1,4 @@
+Pillow
+pigpio
+adafruit-circuitpython-bme280
+adafruit-circuitpython-sgp30
