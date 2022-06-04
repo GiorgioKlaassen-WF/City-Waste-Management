@@ -67,11 +67,11 @@
             <h1 class="h2">Temperatuur</h1>
             <a class="btn btn-outline-primary" href="{% url 'index' %}" role="button">Temperatuur</a>
             <a class="btn btn-outline-primary" href="{% url 'index/humidity' %}" role="button">Luchtvochtigheid</a>
-            <a class="btn btn-outline-primary" href="#" role="button">Fijnstof</a>
-            <a class="btn btn-outline-primary" href="#" role="button">CO2</a>
-            <a class="btn btn-outline-primary" href="#" role="button">VOC</a>
-            <a class="btn btn-outline-primary" href="#" role="button">CO2-equivalent</a>
-            <a class="btn btn-outline-primary" href="#" role="button">Druk</a>
+            <a class="btn btn-outline-primary" href="{% url 'index/pm' %}" role="button">Fijnstof</a>
+            <a class="btn btn-outline-primary" href="{% url 'index/co2' %}" role="button">CO2</a>
+            <a class="btn btn-outline-primary" href="{% url 'index/voc' %}" role="button">VOC</a>
+            <a class="btn btn-outline-primary" href="{% url 'index/co2e' %}" role="button">CO2-equivalent</a>
+            <a class="btn btn-outline-primary" href="{% url 'index/pressure' %}" role="button">Druk</a>
           </div>
           <style type="text/css">
             .chartbox{

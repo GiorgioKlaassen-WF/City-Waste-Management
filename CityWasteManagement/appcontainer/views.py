@@ -1,4 +1,5 @@
 import datetime
+import re
 import urllib,json
 from django.shortcuts import render
 import folium
@@ -11,7 +12,7 @@ import pandas as pd
 
 def index(request):
 
-    url='http://localhost:3000/api/sensor/map/data'
+    url='http://localhost:3000/api/sensor/628763310955ba3d21e943fb/data'
     res=urllib.request.urlopen(url)
     data=json.loads(res.read())
 
@@ -36,6 +37,77 @@ def index_humidity(request):
         chartdata.append(state['confirmed'])
 
     return render(request, 'index-humidity.html', {'labels': labels, 'chartdata': chartdata})
+
+def index_PM(request):
+
+    url='https://data.covid19india.org/data.json'
+    res=urllib.request.urlopen(url)
+    data=json.loads(res.read())
+
+    labels=[]
+    chartdata=[]
+    for state in data['statewise']:
+        labels.append(state['state'])
+        chartdata.append(state['confirmed'])
+
+    return render(request, 'index-PM.html', {'labels': labels, 'chartdata': chartdata})
+
+def index_CO2(request):
+
+    url='https://data.covid19india.org/data.json'
+    res=urllib.request.urlopen(url)
+    data=json.loads(res.read())
+
+    labels=[]
+    chartdata=[]
+    for state in data['statewise']:
+        labels.append(state['state'])
+        chartdata.append(state['confirmed'])
+
+    return render(request, 'index-CO2.html', {'labels': labels, 'chartdata': chartdata})
+
+def index_VOC(request):
+
+    url='https://data.covid19india.org/data.json'
+    res=urllib.request.urlopen(url)
+    data=json.loads(res.read())
+
+    labels=[]
+    chartdata=[]
+    for state in data['statewise']:
+        labels.append(state['state'])
+        chartdata.append(state['confirmed'])
+
+    return render(request, 'index-VOC.html', {'labels': labels, 'chartdata': chartdata})
+
+def index_CO2E(request):
+
+    url='https://data.covid19india.org/data.json'
+    res=urllib.request.urlopen(url)
+    data=json.loads(res.read())
+
+    labels=[]
+    chartdata=[]
+    for state in data['statewise']:
+        labels.append(state['state'])
+        chartdata.append(state['confirmed'])
+
+    return render(request, 'index-CO2E.html', {'labels': labels, 'chartdata': chartdata})
+
+def index_pressure(request):
+
+    url='https://data.covid19india.org/data.json'
+    res=urllib.request.urlopen(url)
+    data=json.loads(res.read())
+
+    labels=[]
+    chartdata=[]
+    for state in data['statewise']:
+        labels.append(state['state'])
+        chartdata.append(state['confirmed'])
+
+    return render(request, 'index-pressure.html', {'labels': labels, 'chartdata': chartdata})
+
 
 def locations(request):
     
@@ -78,6 +150,7 @@ def future(request):
     
     date = datetime.datetime.now().date()
     date += datetime.timedelta(days=1)
+    dateConvert = re.sub(r'(\d{4})-(\d{1,2})-(\d{1,2})', '\\3-\\2-\\1', str(date))
 
     #algorithm for predicting future waste
 
@@ -107,5 +180,5 @@ def future(request):
     data2 = pd.DataFrame(new_candidates,columns= ['tijdstip'])
     y_pred=logistic_regression.predict(data2)
 
-    return render(request, 'futureprediction.html', {'chartdata': list(y_pred), 'timevalues': timevalues, 'date': date})
+    return render(request, 'futureprediction.html', {'chartdata': list(y_pred), 'timevalues': timevalues, 'date': dateConvert})
 
