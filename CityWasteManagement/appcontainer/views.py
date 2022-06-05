@@ -1,4 +1,3 @@
-from cgi import test
 import datetime
 import re
 import urllib,json
