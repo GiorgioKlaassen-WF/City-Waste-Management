@@ -1,3 +1,4 @@
+from cgi import test
 import datetime
 import re
 import urllib,json
@@ -10,104 +11,72 @@ from sklearn import metrics
 import seaborn as sn
 import pandas as pd
 
+url='http://localhost:3000/api/sensor/628763310955ba3d21e943fb/data'
+res=urllib.request.urlopen(url)
+data=json.loads(res.read())
+
+giventimeValues=[]
+for readings in data["readings"]:
+    split = readings["createdAt"].split(".")
+    removeT = [item.replace('T', ' ') for item in split]
+    formatDate = re.sub(r'(\d{4})-(\d{1,2})-(\d{1,2})', '\\3-\\2-\\1', str(removeT[0]))
+    giventimeValues.append(formatDate[0:16])
+
 def index(request):
 
-    url='http://localhost:3000/api/sensor/628763310955ba3d21e943fb/data'
-    res=urllib.request.urlopen(url)
-    data=json.loads(res.read())
-
-    id=[]
-    sensorName=[]
-    for sensor in data:
-        for data in sensor["sensors"]:
-            print(data["sensors"]["tempSensor"])
-
-    return render(request, 'index.html', {'labels': sensorName, 'chartdata': id})
+    tempValues=[]
+    for readings in data["readings"]:
+            tempValues.append(readings["sensors"]["tempSensor"])
+    
+    return render(request, 'index.html', {'labels': giventimeValues, 'chartdata': tempValues})
 
 def index_humidity(request):
 
-    url='https://data.covid19india.org/data.json'
-    res=urllib.request.urlopen(url)
-    data=json.loads(res.read())
+    humidityValues=[]
+    for readings in data["readings"]:
+        humidityValues.append(readings["sensors"]["humiSensor"])
 
-    labels=[]
-    chartdata=[]
-    for state in data['statewise']:
-        labels.append(state['state'])
-        chartdata.append(state['confirmed'])
-
-    return render(request, 'index-humidity.html', {'labels': labels, 'chartdata': chartdata})
+    return render(request, 'index-humidity.html', {'labels': giventimeValues, 'chartdata': humidityValues})
 
 def index_PM(request):
 
-    url='https://data.covid19india.org/data.json'
-    res=urllib.request.urlopen(url)
-    data=json.loads(res.read())
+    pmValues=[]
+    for readings in data["readings"]:
+        pmValues.append(readings["sensors"]["dustSensor"])
 
-    labels=[]
-    chartdata=[]
-    for state in data['statewise']:
-        labels.append(state['state'])
-        chartdata.append(state['confirmed'])
-
-    return render(request, 'index-PM.html', {'labels': labels, 'chartdata': chartdata})
+    return render(request, 'index-PM.html', {'labels': giventimeValues, 'chartdata': pmValues})
 
 def index_CO2(request):
 
-    url='https://data.covid19india.org/data.json'
-    res=urllib.request.urlopen(url)
-    data=json.loads(res.read())
+    co2Values=[]
+    for readings in data["readings"]:
+        co2Values.append(readings["sensors"]["eCO2Sensor"])
 
-    labels=[]
-    chartdata=[]
-    for state in data['statewise']:
-        labels.append(state['state'])
-        chartdata.append(state['confirmed'])
-
-    return render(request, 'index-CO2.html', {'labels': labels, 'chartdata': chartdata})
+    return render(request, 'index-CO2.html', {'labels': giventimeValues, 'chartdata': co2Values})
 
 def index_VOC(request):
 
-    url='https://data.covid19india.org/data.json'
-    res=urllib.request.urlopen(url)
-    data=json.loads(res.read())
+    vocValues=[]
+    for readings in data["readings"]:
+        vocValues.append(readings["sensors"]["TVOCSensor"])
 
-    labels=[]
-    chartdata=[]
-    for state in data['statewise']:
-        labels.append(state['state'])
-        chartdata.append(state['confirmed'])
-
-    return render(request, 'index-VOC.html', {'labels': labels, 'chartdata': chartdata})
+    return render(request, 'index-VOC.html', {'labels': giventimeValues, 'chartdata': vocValues})
 
 def index_CO2E(request):
 
-    url='https://data.covid19india.org/data.json'
-    res=urllib.request.urlopen(url)
-    data=json.loads(res.read())
+    co2eValues=[]
+    for readings in data["readings"]:
+        co2eValues.append(readings["sensors"]["CO2eqSensor"])
 
-    labels=[]
-    chartdata=[]
-    for state in data['statewise']:
-        labels.append(state['state'])
-        chartdata.append(state['confirmed'])
-
-    return render(request, 'index-CO2E.html', {'labels': labels, 'chartdata': chartdata})
+    return render(request, 'index-CO2E.html', {'labels': giventimeValues, 'chartdata': co2eValues})
 
 def index_pressure(request):
 
-    url='https://data.covid19india.org/data.json'
-    res=urllib.request.urlopen(url)
-    data=json.loads(res.read())
+    pressureValues=[]
+    for readings in data["readings"]:
+        pressureValues.append(readings["sensors"]["pressureSensor"])
 
-    labels=[]
-    chartdata=[]
-    for state in data['statewise']:
-        labels.append(state['state'])
-        chartdata.append(state['confirmed'])
-
-    return render(request, 'index-pressure.html', {'labels': labels, 'chartdata': chartdata})
-
+    return render(request, 'index-pressure.html', {'labels': giventimeValues, 'chartdata': pressureValues})
 
 def locations(request):
     
@@ -181,4 +150,3 @@ def future(request):
     y_pred=logistic_regression.predict(data2)
 
     return render(request, 'futureprediction.html', {'chartdata': list(y_pred), 'timevalues': timevalues, 'date': dateConvert})
-
