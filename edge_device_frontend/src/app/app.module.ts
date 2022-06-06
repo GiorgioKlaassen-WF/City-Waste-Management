@@ -16,6 +16,7 @@ import { SensorInfoComponent } from './sensor-info/sensor-info.component';
 import { MapEncapsulationComponent } from './map-ecaptulation/map-encapsulation.component';
 import { SocketIoConfig, SocketIoModule } from "ngx-socket-io";
 import { HomePanelComponent } from './home-panel/home-panel.component';
+import { ToastrModule } from "ngx-toastr";
 
 
 const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
@@ -41,6 +42,14 @@ const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
     LeafletModule,
     HttpClientModule,
     SocketIoModule.forRoot(config),
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      enableHtml: true,
+      countDuplicates: true,
+      closeButton: true,
+      maxOpened: 3,
+      autoDismiss: true
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -18,8 +18,6 @@ export class EventsComponent implements OnInit {
     this.wssSub = this.wss.getLogs().subscribe((data) => {
       // @ts-ignore
       this.logs?.push(data.sensorReading);
-
-      console.log(this.logs)
     })
   }
 

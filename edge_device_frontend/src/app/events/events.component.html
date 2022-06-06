@@ -1,6 +1,6 @@
-<pre>
-  {{this.logs | json}}
-</pre>
+<!--<pre>-->
+<!--  {{this.logs | json}}-->
+<!--</pre>-->
 
 <clr-datagrid>
   <clr-dg-column>sensor ID</clr-dg-column>
@@ -9,7 +9,7 @@
   <clr-dg-column>CO2 (ppm)</clr-dg-column>
 
   <clr-dg-row *ngFor="let log of logs">
-    <clr-dg-cell>{{log?.sensorId}}</clr-dg-cell>
+    <clr-dg-cell><a routerLink="/sensor/{{log?.sensorId}}">{{log?.sensorId}}</a></clr-dg-cell>
     <clr-dg-cell>{{log?.trash}}</clr-dg-cell>
     <clr-dg-cell>{{log?.createdAt | date}}</clr-dg-cell>
     <clr-dg-cell>{{log?.sensors.eCO2Sensor}}</clr-dg-cell>
