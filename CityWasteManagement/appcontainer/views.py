@@ -84,27 +84,31 @@ def locations(request):
     res=urllib.request.urlopen(url)
     data=json.loads(res.read())
 
-    for sensor in data:
-        for data in sensor["sensors"]:
-            trash = data["trash"]
-            temperature = (data["sensors"]["tempSensor"])
-            humidity = (data["sensors"]["humiSensor"])
-            dust = (data["sensors"]["dustSensor"])
-            eco2 = (data["sensors"]["eCO2Sensor"])
-            tvoc = (data["sensors"]["TVOCSensor"])
-            co2eq = (data["sensors"]["CO2eqSensor"])
-            pressure = (data["sensors"]["pressureSensor"])
+    figure = folium.Figure(width=1200, height=550)
+    map = folium.Map(location= [52.09061, 5.12143], zoom_start=7).add_to(figure)
 
-        if trash == False:
-            trashValue = "Nee"
-        else:
-            trashValue = "Ja"
+    for sensor in data:
+        for sensor in data:
+            for data in sensor["sensors"]:
+                trash = data["trash"]
+                temperature = (data["sensors"]["tempSensor"])
+                humidity = (data["sensors"]["humiSensor"])
+                dust = (data["sensors"]["dustSensor"])
+                eco2 = (data["sensors"]["eCO2Sensor"])
+                tvoc = (data["sensors"]["TVOCSensor"])
+                co2eq = (data["sensors"]["CO2eqSensor"])
+                pressure = (data["sensors"]["pressureSensor"])
+                if trash == False:
+                    trashValue = "Nee"
+                else:
+                    trashValue = "Ja"
+                folium.Marker([sensor["location"]["lat"], sensor["location"]["lon"]], tooltip=sensor["location"]["locationName"], popup="Afval: " + trashValue + " <br> Temperatuur: " + str(temperature) + "°C <br> Luchtvochtigheid: " + str(humidity) + "% <br> Fijnstof: " + str(dust) + " PM <br> CO2: " + str(eco2) + "<br> TVOC: " + str(tvoc) + "<br> CO2-Equivalent: " + str(co2eq) + " <br> Druk: " + str(pressure) + " hPa").add_to(map)
 
         #create map
-        figure = folium.Figure(width=1200, height=550)
-        map = folium.Map(location= [52.3507849, 5.2647016], zoom_start=10).add_to(figure)
-        folium.Marker([52.3717774, 5.2200557], tooltip="Stadhuisplein Almere", popup="Afval: " + trashValue + " <br> Temperatuur: " + str(temperature) + "°C <br> Luchtvochtigheid: " + 
-        str(humidity) + "% <br> Fijnstof: " + str(dust) + " PM <br> CO2: " + str(eco2) + "<br> TVOC: " + str(tvoc) + "<br> CO2-Equivalent: " + str(co2eq) + " <br> Druk: " + str(pressure) + " hPa").add_to(map)
+        #figure = folium.Figure(width=1200, height=550)
+        #map = folium.Map(location= [52.3507849, 5.2647016], zoom_start=10).add_to(figure)
+        #folium.Marker([52.3717774, 5.2200557], tooltip="Stadhuisplein Almere", popup="Afval: " + trashValue + " <br> Temperatuur: " + str(temperature) + "°C <br> Luchtvochtigheid: " + 
+        #str(humidity) + "% <br> Fijnstof: " + str(dust) + " PM <br> CO2: " + str(eco2) + "<br> TVOC: " + str(tvoc) + "<br> CO2-Equivalent: " + str(co2eq) + " <br> Druk: " + str(pressure) + " hPa").add_to(map)
         
         #html representation of map
         map = map._repr_html_()
@@ -139,13 +143,13 @@ def future(request):
     confusion_matrix = pd.crosstab(y_test, y_pred, rownames=['Actual'], colnames=['Predicted'])
     sn.heatmap(confusion_matrix, annot=True)
 
-    print('Accuracy: ',metrics.accuracy_score(y_test, y_pred))
-
     #prediction
     new_candidates = {'tijdstip': [9, 10, 11, 12, 13, 14, 15, 16, 17, 18]}
     timevalues = ["9u", "10u", "11u", "12u", "13u", "14u", "15u", "16u", "17u", "18u"]
 
     data2 = pd.DataFrame(new_candidates,columns= ['tijdstip'])
     y_pred=logistic_regression.predict(data2)
+
+    print(y_pred)
 
     return render(request, 'futureprediction.html', {'chartdata': list(y_pred), 'timevalues': timevalues, 'date': dateConvert})
