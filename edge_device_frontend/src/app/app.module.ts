@@ -19,7 +19,7 @@ import { HomePanelComponent } from './home-panel/home-panel.component';
 import { ToastrModule } from "ngx-toastr";
 
 
-const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: 'ws://139-162-139-209.ip.linodeusercontent.com', options: {} };
 
 @NgModule({
   declarations: [

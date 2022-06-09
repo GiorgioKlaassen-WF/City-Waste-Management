@@ -2,3 +2,4 @@ Pillow
 pigpio
 adafruit-circuitpython-bme280
 adafruit-circuitpython-sgp30
+adafruit-circuitpython-ssd1306

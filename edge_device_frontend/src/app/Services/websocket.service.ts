@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, Subscription } from "rxjs";
 import { Socket } from "ngx-socket-io";
 
-const WebSocketServer = "ws://localhost:3000";
+const WebSocketServer = "ws://139-162-139-209.ip.linodeusercontent.com";
 
 @Injectable({
   providedIn: 'root'

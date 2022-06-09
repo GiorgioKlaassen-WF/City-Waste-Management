@@ -6,7 +6,7 @@ import { HttpClient } from "@angular/common/http";
 })
 export class DeviceService {
 
-  private url = "http://localhost:3000/api/";
+  private url = "https://139-162-139-209.ip.linodeusercontent.com/api/";
 
   constructor(private http: HttpClient) {
   }
