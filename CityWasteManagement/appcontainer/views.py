@@ -10,7 +10,8 @@ from sklearn import metrics
 import seaborn as sn
 import pandas as pd
 
-url='http://localhost:3000/api/sensor/628763310955ba3d21e943fb/data'
+#url='http://localhost:3000/api/sensor/628763310955ba3d21e943fb/data'
+url='https://139-162-139-209.ip.linodeusercontent.com/api/sensor/629e0b52a9f7583eb8f99f18/data'
 res=urllib.request.urlopen(url)
 data=json.loads(res.read())
 
@@ -80,7 +81,8 @@ def index_pressure(request):
 def locations(request):
     
     #get API data for sensor info
-    url='http://localhost:3000/api/sensor/map/data'
+    #url='http://localhost:3000/api/sensor/map/data'
+    url = 'https://139-162-139-209.ip.linodeusercontent.com/api/sensor/map/data'
     res=urllib.request.urlopen(url)
     data=json.loads(res.read())
 
